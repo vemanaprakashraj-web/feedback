@@ -1,0 +1,10 @@
+feedback.db
+*.db
+.env
+.venv/
+venv/
+__pycache__/
+*.pyc
+server.log
+vercel.json
+.vercel

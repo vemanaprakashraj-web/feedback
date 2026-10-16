@@ -1,0 +1,37 @@
+services:
+  api:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: sqlite:////app/data/socialpulse.db
+      CORS_ORIGINS: http://localhost:5173
+    ports:
+      - "8000:8000"
+    volumes:
+      - socialpulse-data:/app/data
+
+  web:
+    build:
+      context: ./frontend
+    depends_on:
+      - api
+    ports:
+      - "5173:4173"
+
+  # Optional PostgreSQL profile:
+  # docker compose --profile postgres up
+  postgres:
+    image: postgres:16-alpine
+    profiles: ["postgres"]
+    environment:
+      POSTGRES_DB: socialpulse
+      POSTGRES_USER: socialpulse
+      POSTGRES_PASSWORD: change-me-in-production
+    ports:
+      - "5432:5432"
+    volumes:
+      - socialpulse-postgres:/var/lib/postgresql/data
+
+volumes:
+  socialpulse-data:
+  socialpulse-postgres:
